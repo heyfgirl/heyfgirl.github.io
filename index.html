@@ -298,6 +298,8 @@
 <li>命令</li>
 </ul>
 <p>mysql中使用int类型来查询string字段，会进行隐式转换。<br>如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。<br>且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>此时需要 查看当前有哪些卡住的进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW FULL PROCESSLIST ;</span><br></pre></td></tr></table></figure></p>
+<p>然后kill当前进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill 574611;</span><br></pre></td></tr></table></figure></p>
 <p>1.MySQL 隐式转换问题，隐藏的深，不容易被发现，在进行 delete ， update 等操作时，一不小心很容易大问题，从而造成事故。</p>
 <p>2.对于 delete , update 等操作时，建议先使用 select 语句，看看获取的结果和预期的是否一致，再进行操作，相对会更安全一些。</p>
 <p>如果是清空表数据建议直接用 truncate，效率上 truncate 远高于 delete，<br>应为 truncate 不走事务，不会锁表，也不会生产大量日志写入日志文件；<br>truncate table table_name 后立刻释放磁盘空间，并重置 auto_increment 的值。<br>delete 删除不释放磁盘空间，但后续 insert 会覆盖在之前删除的数据上</p>

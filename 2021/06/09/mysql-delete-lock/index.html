@@ -16,18 +16,18 @@
 
 
 
-<meta name="description" content="title: Mysql删除操作卡死date: 2021-06-09 16:57:12tags:  linux 命令  mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 1.MySQL 隐式转换问">
+<meta name="description" content="title: Mysql删除操作卡死date: 2021-06-09 16:57:12tags:  linux 命令  mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 解决问题此时需要 查看当前">
 <meta name="keywords" content="半个我">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不可及">
 <meta property="og:url" content="https://wangqiong.me/2021/06/09/mysql-delete-lock/index.html">
 <meta property="og:site_name" content="不可及">
-<meta property="og:description" content="title: Mysql删除操作卡死date: 2021-06-09 16:57:12tags:  linux 命令  mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 1.MySQL 隐式转换问">
+<meta property="og:description" content="title: Mysql删除操作卡死date: 2021-06-09 16:57:12tags:  linux 命令  mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 解决问题此时需要 查看当前">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-06-09T09:05:58.240Z">
+<meta property="og:updated_time" content="2021-06-09T09:15:48.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="不可及">
-<meta name="twitter:description" content="title: Mysql删除操作卡死date: 2021-06-09 16:57:12tags:  linux 命令  mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 1.MySQL 隐式转换问">
+<meta name="twitter:description" content="title: Mysql删除操作卡死date: 2021-06-09 16:57:12tags:  linux 命令  mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 解决问题此时需要 查看当前">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -283,6 +283,8 @@
 <li>命令</li>
 </ul>
 <p>mysql中使用int类型来查询string字段，会进行隐式转换。<br>如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。<br>且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>此时需要 查看当前有哪些卡住的进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW FULL PROCESSLIST ;</span><br></pre></td></tr></table></figure></p>
+<p>然后kill当前进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill 574611;</span><br></pre></td></tr></table></figure></p>
 <p>1.MySQL 隐式转换问题，隐藏的深，不容易被发现，在进行 delete ， update 等操作时，一不小心很容易大问题，从而造成事故。</p>
 <p>2.对于 delete , update 等操作时，建议先使用 select 语句，看看获取的结果和预期的是否一致，再进行操作，相对会更安全一些。</p>
 <p>如果是清空表数据建议直接用 truncate，效率上 truncate 远高于 delete，<br>应为 truncate 不走事务，不会锁表，也不会生产大量日志写入日志文件；<br>truncate table table_name 后立刻释放磁盘空间，并重置 auto_increment 的值。<br>delete 删除不释放磁盘空间，但后续 insert 会覆盖在之前删除的数据上</p>
@@ -315,7 +317,7 @@
         <p><span>本文标题:</span><a href="/2021/06/09/mysql-delete-lock/"></a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Hey-f</a></p>
         <p><span>发布时间:</span>2021-06-09, 16:57:12</p>
-        <p><span>最后更新:</span>2021-06-09, 17:05:58</p>
+        <p><span>最后更新:</span>2021-06-09, 17:15:48</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2021/06/09/mysql-delete-lock/" title="">https://wangqiong.me/2021/06/09/mysql-delete-lock/</a>
             <span class="copy-path" data-clipboard-text="原文: https://wangqiong.me/2021/06/09/mysql-delete-lock/　　作者: Hey-f" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -345,7 +347,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决问题"><span class="toc-number">1.</span> <span class="toc-text">解决问题</span></a></li></ol>
         
     </div>
     <style>
