@@ -17,14 +17,14 @@
 
 
 <meta name="description" content="mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 解决问题此时需要 查看当前有哪些卡住的进程1SHOW FULL PROCESSLIST ; 然后kill当前进程1kill 574611; 1.My">
-<meta name="keywords" content="linux,命令">
+<meta name="keywords" content="命令,mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mysql删除操作卡死">
 <meta property="og:url" content="https://wangqiong.me/2021/06/09/mysql-delete-lock/index.html">
 <meta property="og:site_name" content="不可及">
 <meta property="og:description" content="mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 解决问题此时需要 查看当前有哪些卡住的进程1SHOW FULL PROCESSLIST ; 然后kill当前进程1kill 574611; 1.My">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-06-09T09:17:33.341Z">
+<meta property="og:updated_time" content="2021-06-09T09:19:31.579Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql删除操作卡死">
 <meta name="twitter:description" content="mysql中使用int类型来查询string字段，会进行隐式转换。如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。 解决问题此时需要 查看当前有哪些卡住的进程1SHOW FULL PROCESSLIST ; 然后kill当前进程1kill 574611; 1.My">
@@ -288,7 +288,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/命令/">命令</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/命令/">命令</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -333,7 +333,7 @@
         <p><span>本文标题:</span><a href="/2021/06/09/mysql-delete-lock/">Mysql删除操作卡死</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Hey-f</a></p>
         <p><span>发布时间:</span>2021-06-09, 16:57:12</p>
-        <p><span>最后更新:</span>2021-06-09, 17:17:33</p>
+        <p><span>最后更新:</span>2021-06-09, 17:19:31</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2021/06/09/mysql-delete-lock/" title="Mysql删除操作卡死">https://wangqiong.me/2021/06/09/mysql-delete-lock/</a>
             <span class="copy-path" data-clipboard-text="原文: https://wangqiong.me/2021/06/09/mysql-delete-lock/　　作者: Hey-f" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
