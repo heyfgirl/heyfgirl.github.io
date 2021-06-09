@@ -264,6 +264,182 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-postgres-array-operator" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/11/27/postgres-array-operator/" class="article-date">
+      <time datetime="2019-11-27T11:59:29.000Z" itemprop="datePublished">2019-11-27</time>
+</a>
+
+ 
+    <a href="/2019/11/27/postgres-array-operator/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2019/11/27/postgres-array-operator/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/27/postgres-array-operator/">postgres对Array的操作</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <table>
+<thead>
+<tr>
+<th>操作符</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">示例</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sf</td>
+<td style="text-align:left">sfs</td>
+<td style="text-align:left">sdf</td>
+<td style="text-align:left">sdfd</td>
+</tr>
+<tr>
+<td>=</td>
+<td style="text-align:left">相等</td>
+<td style="text-align:left">SELECT ARRAY[1.1,2.1,3.1]::int[] = ARRAY[1,2,3];</td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td style="text-align:left">不等于</td>
+<td style="text-align:left">select ARRAY[1,2,3] &lt;&gt; ARRAY[1,2,4];</td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td style="text-align:left">小于</td>
+<td style="text-align:left">select ARRAY[1,2,3] &lt; ARRAY[1,2,4];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td style="text-align:left">大于</td>
+<td style="text-align:left">select ARRAY[1,4,3] &gt; ARRAY[1,2,4];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td style="text-align:left">小于或等于</td>
+<td style="text-align:left">select ARRAY[1,2,3] &lt;= ARRAY[1,2,3];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td style="text-align:left">大于或等于</td>
+<td style="text-align:left">select ARRAY[1,4,3] &gt;= ARRAY[1,4,3];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td>@&gt;</td>
+<td style="text-align:left">包含</td>
+<td style="text-align:left">select ARRAY[1,4,3] @&gt; ARRAY[3,1];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td>&lt;@</td>
+<td style="text-align:left">包含于</td>
+<td style="text-align:left">select ARRAY[2,7] &lt;@ ARRAY[1,7,4,2,6];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td style="text-align:left">重叠（是否有相同元素）</td>
+<td style="text-align:left">select ARRAY[1,4,3] &amp;&amp; ARRAY[2,1];</td>
+<td style="text-align:left">t</td>
+</tr>
+<tr>
+<td> &#124;&#124;</td>
+<td style="text-align:left">数组与数组连接</td>
+<td style="text-align:left">select ARRAY[1,2,3]&#124;&#124;ARRAY[4,5,6];</td>
+<td style="text-align:left">{1,2,3,4,5,6}</td>
+</tr>
+<tr>
+<td> &#124;&#124;</td>
+<td style="text-align:left">数组与数组连接</td>
+<td style="text-align:left">select ARRAY[1,2,3]&#124;&#124;ARRAY[[4,5,6],[7,8,9]];</td>
+<td style="text-align:left">{1,2,3},{4,5,6},{7,8,9}</td>
+</tr>
+<tr>
+<td> &#124;&#124;</td>
+<td style="text-align:left">元素与数组连接</td>
+<td style="text-align:left">select 3  &#124;&#124;  ARRAY[4,5,6];</td>
+<td style="text-align:left">{3,4,5,6}</td>
+</tr>
+<tr>
+<td> &#124;&#124;</td>
+<td style="text-align:left">数组与元素连接</td>
+<td style="text-align:left">select ARRAY[4,5,6] &#124;&#124; 7;</td>
+<td style="text-align:left">{4,5,6,7}</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://blog.csdn.net/pg_hgdb/article/details/79483767" target="_blank" rel="noopener">postgresql数组操作符与函数</a></p>
+<p>postgres to_number(text,text2)  //text2 = 999999.99 为保留两位有效数据，不然将不识别小数点，只认识数字类型<br>select cast(“extension”#&gt;&gt;’{lat}’ as double precision) as lat, cast(“extension”#&gt;&gt;’{lng}’ as numeric) as lng from ads where id=6;</p>
+
+      <script>
+        window.disqusProxy={
+          shortname: 'halfmy',
+          username: 'halfmy',
+          server: 'halfmy.com/disqus',
+          port: 80,
+          adminAvatar: '/avatars/admin-avatar.jpg',
+          identifier: '2019/11/27/postgres-array-operator/',
+        };
+        window.disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = window.disqusProxy.identifier;
+        };
+      </script>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-docker-postgres-backup" class="article article-type-post" itemscope="" itemprop="blogPost">
   
     <div class="article-meta">
@@ -1233,91 +1409,6 @@ edb当前事务号到达2^32时，回归
 
 
   
-    <article id="post-centos_server" class="article article-type-post" itemscope="" itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/11/09/centos_server/" class="article-date">
-      <time datetime="2017-11-09T08:30:49.000Z" itemprop="datePublished">2017-11-09</time>
-</a>
-
- 
-    <a href="/2017/11/09/centos_server/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-        
-            <span class="disqus-comment-count" data-disqus-identifier="2017/11/09/centos_server/"></span>
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/09/centos_server/">小作坊的服务器购买须知</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p><strong> 如今大多数同学在学习编程的道路上，都会选择购买自己的服务器，然而由于国内环境，并不能访问到Google等，所以很多同学会选择，国外服务器，或者香港服务器。我推荐如果只是学习编程实践没有访问外网的需要，还是用国内的阿里云服务，质量还是有保证的。本人使用的是香港的小作坊服务器UFOVPS，遭受多次攻击。很沉痛。在此来告诫各位同学 </strong></p>
-<h3 id="ssh登陆不上，被告知流量异常"><a href="#ssh登陆不上，被告知流量异常" class="headerlink" title="ssh登陆不上，被告知流量异常"></a>ssh登陆不上，被告知流量异常</h3><p>提交工单回复<br><em>後台系統檢測到您的服務器不停地往外發送大量異常數據包，和攻擊行為的特徵很類似，在短時間內消耗了大量的流量，流量記錄您可以在“監測記錄”看到，請問是否是您本人使用？如果不是您本人使用，可能是由下面的原因造成的：</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用了不夠複雜的密碼 ，或者已經被洩露的常用密碼，導致服務器被入侵或者惡意利用；</span><br><span class="line">使用了第三方的破解版軟件或者沒有驗證來源的軟件 ，例如shadowsock、銳速、ZetaTCP等破解軟件，導致被利用後門入侵或劫持。</span><br></pre></td></tr></table></figure></p>
-<p>但是我只知道并非如此，通过查看后台流量；来源我发现是我的服务器大量的向外请求无效数据包，被当成肉鸡了，我立刻将防火墙Iptables打开，关闭向外访问权限，限制请求频率才解决。<br>关于如何设置防火墙请查看我另一个记录文档。</p>
-
-      <script>
-        window.disqusProxy={
-          shortname: 'halfmy',
-          username: 'halfmy',
-          server: 'halfmy.com/disqus',
-          port: 80,
-          adminAvatar: '/avatars/admin-avatar.jpg',
-          identifier: '2017/11/09/centos_server/',
-        };
-        window.disqus_config = function () {
-          this.page.url = window.location.href;
-          this.page.identifier = window.disqusProxy.identifier;
-        };
-      </script>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CentOS/">CentOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/防火墙/">防火墙</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; 往上翻</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页 &raquo;</a>
@@ -1329,7 +1420,7 @@ edb当前事务号到达2^32时，回归
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2015-2020 Hey-f
+                2015-2021 Hey-f
             </div>
             <div class="footer-right">
                 <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a><!--  <i class="fa fa-heart animated infinite pulse"></i>  -->
