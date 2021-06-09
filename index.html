@@ -268,7 +268,7 @@
   
     <div class="article-meta">
       <a href="/2021/06/09/mysql-delete-lock/" class="article-date">
-      <time datetime="2021-06-09T08:57:12.282Z" itemprop="datePublished">2021-06-09</time>
+      <time datetime="2021-06-09T08:57:12.000Z" itemprop="datePublished">2021-06-09</time>
 </a>
 
  
@@ -288,16 +288,21 @@
       <input type="hidden" class="isFancy">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/09/mysql-delete-lock/">Mysql删除操作卡死</a>
+    </h1>
+  
+
+      </header>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <hr>
-<p>title: Mysql删除操作卡死<br>date: 2021-06-09 16:57:12<br>tags:</p>
-<ul>
-<li>linux</li>
-<li>命令</li>
-</ul>
-<p>mysql中使用int类型来查询string字段，会进行隐式转换。<br>如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。<br>且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。</p>
+        <p>mysql中使用int类型来查询string字段，会进行隐式转换。<br>如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。<br>且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。</p>
 <h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>此时需要 查看当前有哪些卡住的进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW FULL PROCESSLIST ;</span><br></pre></td></tr></table></figure></p>
 <p>然后kill当前进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill 574611;</span><br></pre></td></tr></table></figure></p>
 <p>1.MySQL 隐式转换问题，隐藏的深，不容易被发现，在进行 delete ， update 等操作时，一不小心很容易大问题，从而造成事故。</p>
@@ -330,6 +335,10 @@
       
 
       
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/命令/">命令</a></li></ul>
+    </div>
+
       
       <div class="clearfix"></div>
     </div>
