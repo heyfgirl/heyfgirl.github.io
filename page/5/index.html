@@ -261,6 +261,83 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ssh_error" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/20/ssh_error/" class="article-date">
+      <time datetime="2017-09-20T07:34:57.000Z" itemprop="datePublished">2017-09-20</time>
+</a>
+
+ 
+    <a href="/2017/09/20/ssh_error/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2017/09/20/ssh_error/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/20/ssh_error/">SSH无法链接linux</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="SSH无法链接Linux"><a href="#SSH无法链接Linux" class="headerlink" title="SSH无法链接Linux"></a>SSH无法链接Linux</h2><hr>
+<p>  某次误操作导致linux虚拟机服务器链接不上，报错/var/empty/sshd must be owned by root and not group or world-writable.</p>
+<h2 id="发现是权限问题"><a href="#发现是权限问题" class="headerlink" title="  发现是权限问题"></a>  发现是权限问题</h2><h3 id="问题查找"><a href="#问题查找" class="headerlink" title="问题查找"></a>问题查找</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rpm -V    检查到ssh软件包正常，但是某个目录属性错误</span><br><span class="line">经查看发现这个目录的属主不是root，所以启动ssh报错</span><br><span class="line">修改为root属主，启动成功</span><br></pre></td></tr></table></figure>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chown -R root:root /var/empty/sshd</span><br><span class="line">chmod 744 /var/empty/sshd</span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+<h3 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h3><p><strong><em> 自己在处理文件权限的时候失误操作，命令中使用了 /xxx 导致将所有文件所有权更改导致 </em></strong></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/linux/">linux</a><a class="article-category-link" href="/categories/ssh/">ssh</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-node_http_flow" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
