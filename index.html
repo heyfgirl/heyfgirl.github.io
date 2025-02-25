@@ -261,6 +261,161 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-go-memory-leak" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/02/25/go-memory-leak/" class="article-date">
+      <time datetime="2025-02-25T03:47:27.000Z" itemprop="datePublished">2025-02-25</time>
+</a>
+
+ 
+    <a href="/2025/02/25/go-memory-leak/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2025/02/25/go-memory-leak/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/02/25/go-memory-leak/">go 内存泄漏排查</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h3><p> 通过k8s容器查看到内存使用率不断攀升<br> <img src="/images/go-memory-leak/image1.png" alt="alt text"></p>
+<h3 id="查找问题"><a href="#查找问题" class="headerlink" title="查找问题"></a>查找问题</h3><ol>
+<li>在 服务启动的main函数中加入 pprof </li>
+</ol>
+<p><img src="/images//go-memory-leak/image2.png" alt="alt text"></p>
+<ol start="2">
+<li>dockerfile 中安装检查所需工具 curl 以及 ss 命令报包 iproute2 等</li>
+</ol>
+<ol start="3">
+<li>获取 pprof 内存图，</li>
+</ol>
+<p><code>go tool pprof -seconds=10 -http=:9999 http://localhost:6060/debug/pprof/heap</code></p>
+<p>存在网络隔离问题，不能直接从开发机访问测试机、线上机器，或者测试机、线上机器没有安装go，那也可以这么做<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:6060/debug/pprof/heap?seconds=30 &gt; heap.out </span><br></pre></td></tr></table></figure><br>将 pprof 信息输出到文件  heap.out  然后将文件下载到本地执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof -http=&#x27;:8081&#x27;           \</span><br><span class="line">   -diff_base heap-new-16:22:04:N.out \  [对照的文件，非必需，可多次进行对比查看具体问题]</span><br><span class="line">   heap-new-17:32:38:N.out  [查看的文件]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h3><ol>
+<li><p>通过图形<img src="/images/go-memory-leak/image4.png" alt="alt text">分析发现可能跟 es 客户端有关</p>
+</li>
+<li><p>进入实例中通过命令查看当前连接数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time netstat -antlp | grep EST | wc -l</span><br></pre></td></tr></table></figure>
+<p>发现有大量连接</p>
+</li>
+<li><p>通过 ss -s 命令查看具体是哪些连接发现全是 estab 占用</p>
+</li>
+</ol>
+<p>查看代码问题，发现原来是 es 客户端忘记对 resp.Body.Close()</p>
+<h2 id="其他方式"><a href="#其他方式" class="headerlink" title="其他方式"></a>其他方式</h2><p>在通过 pprof 图发现 es 客户端可能出现问题时，使用 cursor 将使用到 es 客户端的文件加入 compose。直接询问 api 该文件中的 es 客户端使用哪里有问题让 ai 帮忙查找。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-kubectl" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/07/09/kubectl/" class="article-date">
+      <time datetime="2024-07-09T02:22:05.000Z" itemprop="datePublished">2024-07-09</time>
+</a>
+
+ 
+    <a href="/2024/07/09/kubectl/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2024/07/09/kubectl/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/07/09/kubectl/">kubectl</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>kubectl 相关操作<br>当k8s中有进程挂了，通过 docker logs 查看不到具体原因，<br>可通过<br><code>kubectl get pod -n &lt;&lt;namespace&gt;&gt;</code><br>命令查看当前 pod 状态<br>是否和镜像有关<br>如需重启可通过<br><code>kubectl rollout restart deployment pod_name -n holdcloud</code><br>命令重启，或通过客户端<br><code>$sed -i &quot;s/:dev/:$COMMIT/g&quot; k8s.yaml$ ./kubectl --server=10.0.1.1:8080 apply -f k8s.yaml</code></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-k8s-del-pod" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -858,153 +1013,6 @@
 
 
   
-    <article id="post-mysql-delete-lock" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2021/06/09/mysql-delete-lock/" class="article-date">
-      <time datetime="2021-06-09T08:57:12.000Z" itemprop="datePublished">2021-06-09</time>
-</a>
-
- 
-    <a href="/2021/06/09/mysql-delete-lock/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-        
-            <span class="disqus-comment-count" data-disqus-identifier="2021/06/09/mysql-delete-lock/"></span>
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/mysql-delete-lock/">Mysql删除操作卡死</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>mysql中使用int类型来查询string字段，会进行隐式转换。<br>如果 该字段存在索引，则会无法使用到 该string类型的索引导致操作超时缓慢。<br>且如果该字段存在索引则会导致delete操作会进行锁表。其他客户端也无法使用delete操作。导致卡死。</p>
-<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>此时需要 查看当前有哪些卡住的进程<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW FULL PROCESSLIST ;</span><br></pre></td></tr></table></figure><br>然后kill当前进程<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill 574611;</span><br></pre></td></tr></table></figure></p>
-<p>1.MySQL 隐式转换问题，隐藏的深，不容易被发现，在进行 delete ， update 等操作时，一不小心很容易大问题，从而造成事故。</p>
-<p>2.对于 delete , update 等操作时，建议先使用 select 语句，看看获取的结果和预期的是否一致，再进行操作，相对会更安全一些。</p>
-<p>如果是清空表数据建议直接用 truncate，效率上 truncate 远高于 delete，<br>应为 truncate 不走事务，不会锁表，也不会生产大量日志写入日志文件；<br>truncate table table_name 后立刻释放磁盘空间，并重置 auto_increment 的值。<br>delete 删除不释放磁盘空间，但后续 insert 会覆盖在之前删除的数据上</p>
-<p>1.降低写错 SQL 的代价，就算删错了，比如 limit 500, 那也就丢了 500 条数据，并不致命，通过 binlog 也可以很快恢复数据。<br>2。避免了长事务，delete 执行时 MySQL 会将所有涉及的行加写锁和 Gap 锁（间隙锁），所有 DML 语句执行相关行会被锁住，如果删除数量大，会直接影响相关业务无法使用。<br>3.delete 数据量大时，不加 limit 容易把 cpu 打满，导致越删越慢。</p>
-<p>注: 针对上述第二点，前提是 sex 上加了索引，大家都知道，加锁都是基于索引的，如果 sex 字段没索引，就会扫描到主键索引上，那么就算 sex = 1 的只有一条记录，也会锁表。</p>
-<p>对于 delete limit 的使用，MySQL 大佬丁奇有一道题：<br>如果你要删除一个表里面的前 10000 行数据，有以下三种方法可以做到：<br>第一种，直接执行 delete from T limit 10000;<br>第二种，在一个连接中循环执行 20 次 delete from T limit 500;<br>第三种，在 20 个连接中同时执行 delete from T limit 500。<br>方案一、事务相对较长，则占用锁的时间较长，会导致其他客户端等待资源时间较长。<br>方案二、串行化执行，将相对长的事务分成多次相对短的事务，则每次事务占用锁的时间相对较短，其他客户端在等待相应资源的时间也较短。这样的操作，同时也意味着将资源分片使用（每次执行使用不同片段的资源），可以提高并发性。<br>方案三、人为自己制造锁竞争，加剧并发量。<br>注: 方案二相对比较好，具体还要结合实际业务场景。</p>
-<p>参考： <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39939530/article/details/110506783">https://blog.csdn.net/weixin_39939530/article/details/110506783</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-children-join-sql" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2020/06/08/children-join-sql/" class="article-date">
-      <time datetime="2020-06-08T09:02:10.000Z" itemprop="datePublished">2020-06-08</time>
-</a>
-
- 
-    <a href="/2020/06/08/children-join-sql/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-        
-            <span class="disqus-comment-count" data-disqus-identifier="2020/06/08/children-join-sql/"></span>
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/08/children-join-sql/">children_join_sql</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>SELECT “id”, “subs”, “name”, “sort”, “level”, “state”,<br>(SELECT cast(COUNT(*) as integer) AS “count”  FROM “goods” AS “goods” WHERE “goods”.”deletedAt” IS NULL AND “goods”.”state” = 1 AND “goods”.”classes” &amp;&amp; ARRAY[“class”.”id”]::INTEGER[]) AS “goods_count”<br>FROM “classes” AS “class”<br>WHERE ((“class”.”deletedAt” &gt; ‘2020-06-08 15:55:25.728 +08:00’ OR “class”.”deletedAt” IS NULL) AND (“class”.”level” = 1 AND “class”.”state” = 1 AND “goods_count”&gt;0)) ORDER BY “class”.”sort” ASC, “class”.”id” DESC;</p>
-<p>【AND “goods_count”&gt;0】<br>上面查询sql语句想查询出class表中信息并且查询出其与goods数据表关联字段的信息<br>上述查询会出现报错，因为 子查询中使用了父查询中的检索信息，使得父查询的生命周期高于子查询，此时父查询中无法查询子查询的字段数据。</p>
-<p>改为下列请求</p>
-<p>SELECT “class”.”id”, “class”.”subs”, “class”.”name”, “class”.”sort”, “class”.”level”, “class”.”state”, cast(COUNT(“goods”.”id”) as integer) AS “count”<br>FROM “classes” AS “class” RIGHT OUTER JOIN goods on (“goods”.”deletedAt” IS NULL AND “goods”.”state” = 1 AND “goods”.”classes” &amp;&amp; ARRAY[“class”.”id”]::INTEGER[])<br>WHERE ((“class”.”deletedAt” &gt; ‘2020-06-08 15:55:25.728 +08:00’ OR “class”.”deletedAt” IS NULL) AND (“class”.”level” = 1 AND “class”.”state” = 1))<br>GROUP BY “class”.”id”<br>ORDER BY “class”.”sort” ASC, “class”.”id” DESC ;</p>
-<p>或者在父查询中再次使用联合检索数据</p>
-<p>SELECT “id”, “subs”, “name”, “sort”, “level”, “state”,<br>(SELECT cast(COUNT(<em>) as integer) AS “count”  FROM “goods” AS “goods” WHERE “goods”.”deletedAt” IS NULL AND “goods”.”state” = 1 AND “goods”.”classes” &amp;&amp; ARRAY[“class”.”id”]::INTEGER[]) AS “goods_count”<br>FROM “classes” AS “class”<br>WHERE ((“class”.”deletedAt” &gt; ‘2020-06-08 15:55:25.728 +08:00’ OR “class”.”deletedAt” IS NULL) AND (“class”.”level” = 1 AND “class”.”state” = 1 AND (SELECT cast(COUNT(</em>) as integer) AS “count”  FROM “goods” AS “goods” WHERE “goods”.”deletedAt” IS NULL AND “goods”.”state” = 1 AND “goods”.”classes” &amp;&amp; ARRAY[“class”.”id”]::INTEGER[])&gt;0)) ORDER BY “class”.”sort” ASC, “class”.”id” DESC;</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
@@ -1016,7 +1024,7 @@
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2015-2023 Hey-f
+                2015-2025 Hey-f
             </div>
             <div class="footer-right">
                 <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a><!--  <i class="fa fa-heart animated infinite pulse"></i>  -->

@@ -261,6 +261,170 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-centos_server" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/09/centos_server/" class="article-date">
+      <time datetime="2017-11-09T08:30:49.000Z" itemprop="datePublished">2017-11-09</time>
+</a>
+
+ 
+    <a href="/2017/11/09/centos_server/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2017/11/09/centos_server/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/09/centos_server/">小作坊的服务器购买须知</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><strong> 如今大多数同学在学习编程的道路上，都会选择购买自己的服务器，然而由于国内环境，并不能访问到Google等，所以很多同学会选择，国外服务器，或者香港服务器。我推荐如果只是学习编程实践没有访问外网的需要，还是用国内的阿里云服务，质量还是有保证的。本人使用的是香港的小作坊服务器UFOVPS，遭受多次攻击。很沉痛。在此来告诫各位同学 </strong></p>
+<h3 id="ssh登陆不上，被告知流量异常"><a href="#ssh登陆不上，被告知流量异常" class="headerlink" title="ssh登陆不上，被告知流量异常"></a>ssh登陆不上，被告知流量异常</h3><p>提交工单回复<br><em>後台系統檢測到您的服務器不停地往外發送大量異常數據包，和攻擊行為的特徵很類似，在短時間內消耗了大量的流量，流量記錄您可以在“監測記錄”看到，請問是否是您本人使用？如果不是您本人使用，可能是由下面的原因造成的：</em><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用了不夠複雜的密碼 ，或者已經被洩露的常用密碼，導致服務器被入侵或者惡意利用；</span><br><span class="line">使用了第三方的破解版軟件或者沒有驗證來源的軟件 ，例如shadowsock、銳速、ZetaTCP等破解軟件，導致被利用後門入侵或劫持。</span><br></pre></td></tr></table></figure><br>但是我只知道并非如此，通过查看后台流量；来源我发现是我的服务器大量的向外请求无效数据包，被当成肉鸡了，我立刻将防火墙Iptables打开，关闭向外访问权限，限制请求频率才解决。<br>关于如何设置防火墙请查看我另一个记录文档。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/" rel="tag">防火墙</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-iptables_config" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/09/iptables_config/" class="article-date">
+      <time datetime="2017-11-09T08:30:49.000Z" itemprop="datePublished">2017-11-09</time>
+</a>
+
+ 
+    <a href="/2017/11/09/iptables_config/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2017/11/09/iptables_config/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/09/iptables_config/">Iptables 安装与设置</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="先检查是否安装了iptables"><a href="#先检查是否安装了iptables" class="headerlink" title="先检查是否安装了iptables"></a>先检查是否安装了iptables</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service iptables status</span><br></pre></td></tr></table></figure>
+<h3 id="安装iptables"><a href="#安装iptables" class="headerlink" title="安装iptables"></a>安装iptables</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y iptables </span><br></pre></td></tr></table></figure>
+<h3 id="升级iptables"><a href="#升级iptables" class="headerlink" title="升级iptables"></a>升级iptables</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum update iptables</span><br></pre></td></tr></table></figure>
+<h3 id="安装iptables-services"><a href="#安装iptables-services" class="headerlink" title="安装iptables-services"></a>安装iptables-services</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install iptables-services</span><br></pre></td></tr></table></figure>
+<hr>
+<p>  如果系统本身安装了firewalld服务，需要关闭该服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ 停止firewalld服务</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">$ 禁用firewalld服务</span><br><span class="line">systemctl mask firewalld</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="规则设置"><a href="#规则设置" class="headerlink" title="规则设置"></a>规则设置</h2><h3 id="查看现有规则"><a href="#查看现有规则" class="headerlink" title="查看现有规则"></a>查看现有规则</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -L -n</span><br></pre></td></tr></table></figure>
+<h3 id="查看现有规则-1"><a href="#查看现有规则-1" class="headerlink" title="查看现有规则"></a>查看现有规则</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -L -n</span><br></pre></td></tr></table></figure>
+<h3 id="查看现有规则-2"><a href="#查看现有规则-2" class="headerlink" title="查看现有规则"></a>查看现有规则</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -L -n</span><br></pre></td></tr></table></figure>
+<h3 id="允许来自于lo接口的数据包-本地访问"><a href="#允许来自于lo接口的数据包-本地访问" class="headerlink" title="允许来自于lo接口的数据包(本地访问)"></a>允许来自于lo接口的数据包(本地访问)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A INPUT -i lo -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="开放XXXX端口"><a href="#开放XXXX端口" class="headerlink" title="开放XXXX端口"></a>开放XXXX端口</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A INPUT -p tcp --dport XXXX -j ACCEPT</span><br><span class="line"></span><br><span class="line">-A默认是插入到尾部的，可以-I来插入到指定位置</span><br><span class="line"></span><br><span class="line">iptables -I INPUT 3 -p tcp -m tcp --dport xxxx -j ACCEPT  </span><br></pre></td></tr></table></figure>
+<h3 id="允许ping"><a href="#允许ping" class="headerlink" title="允许ping"></a>允许ping</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="要封停一个IP，使用下面这条命令："><a href="#要封停一个IP，使用下面这条命令：" class="headerlink" title="要封停一个IP，使用下面这条命令："></a>要封停一个IP，使用下面这条命令：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -I INPUT -s ***.***.***.*** -j DROP</span><br></pre></td></tr></table></figure>
+<h3 id="要解封一个IP，使用下面这条命令"><a href="#要解封一个IP，使用下面这条命令" class="headerlink" title="要解封一个IP，使用下面这条命令:"></a>要解封一个IP，使用下面这条命令:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -D INPUT -s ***.***.***.*** -j DROP</span><br></pre></td></tr></table></figure>
+<h3 id="其他入站一律丢弃"><a href="#其他入站一律丢弃" class="headerlink" title="其他入站一律丢弃"></a>其他入站一律丢弃</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -P INPUT DROP</span><br></pre></td></tr></table></figure>
+<h3 id="所有出站一律绿灯"><a href="#所有出站一律绿灯" class="headerlink" title="所有出站一律绿灯"></a>所有出站一律绿灯</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -P OUTPUT ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="所有转发一律丢弃"><a href="#所有转发一律丢弃" class="headerlink" title="所有转发一律丢弃"></a>所有转发一律丢弃</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -P FORWARD DROP</span><br></pre></td></tr></table></figure>
+<h3 id="如果要添加内网ip信任（接受其所有TCP请求）"><a href="#如果要添加内网ip信任（接受其所有TCP请求）" class="headerlink" title="如果要添加内网ip信任（接受其所有TCP请求）"></a>如果要添加内网ip信任（接受其所有TCP请求）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A INPUT -p tcp -s 45.96.174.68 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="访问外网"><a href="#访问外网" class="headerlink" title="访问外网"></a>访问外网</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h2 id="防止DDOS攻击"><a href="#防止DDOS攻击" class="headerlink" title="防止DDOS攻击"></a>防止DDOS攻击</h2><h3 id="屏蔽-SYN-RECV-的连接"><a href="#屏蔽-SYN-RECV-的连接" class="headerlink" title="屏蔽 SYN_RECV 的连接"></a>屏蔽 SYN_RECV 的连接</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A FORWARD -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m limit --limit 1/sec -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="限制IP碎片，每秒钟只允许100个碎片，用来防止DoS"><a href="#限制IP碎片，每秒钟只允许100个碎片，用来防止DoS" class="headerlink" title="限制IP碎片，每秒钟只允许100个碎片，用来防止DoS***"></a>限制IP碎片，每秒钟只允许100个碎片，用来防止DoS***</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A FORWARD -f -m limit --limit 100/sec --limit-burst 100 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h3 id="限制ping包每秒一个，10个后重新开始"><a href="#限制ping包每秒一个，10个后重新开始" class="headerlink" title="限制ping包每秒一个，10个后重新开始"></a>限制ping包每秒一个，10个后重新开始</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A FORWARD -p icmp -m limit --limit 1/sec --limit-burst 10 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>###限制ICMP包回应请求每秒一个<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -A FORWARD -p icmp -m icmp --icmp-type 8 -m limit --limit 1/sec -j ACCEPT</span><br></pre></td></tr></table></figure></p>
+<h2 id="删除规则"><a href="#删除规则" class="headerlink" title="删除规则"></a>删除规则</h2><h3 id="删除INPUT规则第三行例子"><a href="#删除INPUT规则第三行例子" class="headerlink" title="删除INPUT规则第三行例子"></a>删除INPUT规则第三行例子</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -D INPUT 3</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99/" rel="tag">防火墙</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-ssh_error" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -695,7 +859,7 @@
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2015-2023 Hey-f
+                2015-2025 Hey-f
             </div>
             <div class="footer-right">
                 <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a><!--  <i class="fa fa-heart animated infinite pulse"></i>  -->
