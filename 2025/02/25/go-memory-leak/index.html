@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://wangqiong.me/images//go-memory-leak/image2.png">
 <meta property="og:image" content="https://wangqiong.me/images/go-memory-leak/image4.png">
 <meta property="article:published_time" content="2025-02-25T03:47:27.000Z">
-<meta property="article:modified_time" content="2025-02-25T06:34:19.106Z">
+<meta property="article:modified_time" content="2025-02-26T07:29:44.315Z">
 <meta property="article:author" content="Hey-f">
 <meta property="article:tag" content="半个我">
 <meta name="twitter:card" content="summary">
@@ -308,8 +308,9 @@
 <li>获取 pprof 内存图，</li>
 </ol>
 <p><code>go tool pprof -seconds=10 -http=:9999 http://localhost:6060/debug/pprof/heap</code></p>
-<p>存在网络隔离问题，不能直接从开发机访问测试机、线上机器，或者测试机、线上机器没有安装go，那也可以这么做<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:6060/debug/pprof/heap?seconds=30 &gt; heap.out </span><br></pre></td></tr></table></figure><br>将 pprof 信息输出到文件  heap.out  然后将文件下载到本地执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof -http=&#x27;:8081&#x27;           \</span><br><span class="line">   -diff_base heap-new-16:22:04:N.out \  [对照的文件，非必需，可多次进行对比查看具体问题]</span><br><span class="line">   heap-new-17:32:38:N.out  [查看的文件]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>存在网络隔离问题，不能直接从开发机访问测试机、线上机器，或者测试机、线上机器没有安装go，那也可以先在容器中安装 curl 工具，然后将信息下载到本地查看</p>
+<p>例如<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 该命令主要查看内存信息，可查看具体哪些地方使用内存过高</span><br><span class="line">curl http://localhost:6060/debug/pprof/heap?seconds=600 &gt; heap.out </span><br><span class="line">&lt;!-- 该命令主要查看 goroutine 信息 go 中内存泄漏大概率由 goroutine 未释放未被垃圾回收引起。首先应该查看 goroutine 个数是否异常 --&gt;</span><br><span class="line">curl http://localhost:6060/debug/pprof/goroutine?debug=1 &gt; goroutine.out </span><br></pre></td></tr></table></figure><br>将 pprof 信息输出到文件  heap.out  然后将文件下载到本地执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go tool pprof -http=&#x27;:8081&#x27;           \</span><br><span class="line">   -diff_base xxx.out \  [对照的文件，非必需，可多次进行对比查看具体问题]</span><br><span class="line">   heap.out  [查看的文件]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h3><ol>
 <li><p>通过图形<img src="/images/go-memory-leak/image4.png" alt="alt text">分析发现可能跟 es 客户端有关</p>
 </li>
@@ -347,7 +348,7 @@
         <p><span>本文标题:</span><a href="/2025/02/25/go-memory-leak/">go 内存泄漏排查</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
         <p><span>发布时间:</span>2025-02-25, 11:47:27</p>
-        <p><span>最后更新:</span>2025-02-25, 14:34:19</p>
+        <p><span>最后更新:</span>2025-02-26, 15:29:44</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2025/02/25/go-memory-leak/" title="go 内存泄漏排查">https://wangqiong.me/2025/02/25/go-memory-leak/</a>
             <span class="copy-path" data-clipboard-text="原文: https://wangqiong.me/2025/02/25/go-memory-leak/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
